@@ -1,5 +1,10 @@
 import { enableProdMode } from '@angular/core';
+import 'zone.js/dist/zone';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import 'core-js/es5/index';
+import 'core-js/es6/reflect';
+import 'core-js/es7/reflect';
 // Note: Polyfill entry point
 import '@babel/polyfill';
 
@@ -10,5 +15,4 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+platformBrowserDynamic().bootstrapModule(AppModule);

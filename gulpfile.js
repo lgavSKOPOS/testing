@@ -5,6 +5,9 @@ var tsify = require("tsify");
 var uglify = require("gulp-uglify");
 var sourcemaps = require("gulp-sourcemaps");
 var buffer = require("vinyl-buffer");
+var watchify = require("watchify");
+var fancy_log = require("fancy-log");
+
 var path = {
     app: "src/app/",
     pages: ["src/**/*.html"],
@@ -78,6 +81,59 @@ gulp.task("default", gulp.series("clean:frontend", gulp.parallel("copy-html"), f
     .pipe(sourcemaps.write("./"))
     .pipe(gulp.dest("dist"));
 }));
+
+
+// Note: ---------------- Start Watch Browserify ----------------
+var watchedBrowserify = watchify(browserify({
+    basedir: ".",
+    cache: {},
+    debug: true,
+    entries: ["src/main.ts"],
+    packageCache: {},
+}).plugin(tsify)
+    .transform("babelify", {
+        babelrc: false,
+        extensions: [".ts"],
+        presets: [
+            [
+                "@babel/preset-env", {
+                targets: {
+                    browsers: [
+                        "ios > 8",
+                        "android > 4.2",
+                        "and_chr > 38",
+                        "and_ff > 56",
+                        "and_qq > 1.1",
+                        "and_uc > 9",
+                        "ie_mob > 10",
+                        "ie >= 7",
+                    ],
+                },
+                useBuiltIns: "entry",
+            },
+            ],
+        ],
+    }),
+);
+
+function bundle() {
+    return watchedBrowserify
+        .bundle()
+        .pipe(source("bundle.js"))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+        // .pipe(uglify())
+        .pipe(sourcemaps.write("./"))
+        .pipe(gulp.dest("dist"));
+}
+
+watchedBrowserify.on("update", bundle);
+watchedBrowserify.on("log", fancy_log);
+// Note: ---------------- End Watch Browserify ----------------
+
+
+
+// gulp.task("default", gulp.series(gulp.parallel("copy-html"), bundle));
 
 // var ts = require("gulp-typescript");
 // var tsProject = ts.createProject("tsconfig.json");
