@@ -13,8 +13,10 @@ var path = {
 
 var fs = require("fs");
 var del = require("del");
+// var polyfill = require("@babel/polyfill")
 
-gulp.task("copy-html", function () {
+// import polyfill from "@babel/polyfill";
+gulp.task("copy-html", function() {
     return gulp.src(path.pages)
         .pipe(gulp.dest("dist"));
 });
@@ -32,7 +34,7 @@ fs.readdir(path.app, function(err, list) {
 */
 
 gulp.task("clean:frontend", function() {
-    return del(`dist/**/*`, `!dist/TestAng`);
+    return del(`dist/**/*`, `!dist/TestAng/*`);
 });
 
 gulp.task("default", gulp.series("clean:frontend", gulp.parallel("copy-html"), function() {
@@ -46,14 +48,33 @@ gulp.task("default", gulp.series("clean:frontend", gulp.parallel("copy-html"), f
     })
     .plugin(tsify)
         .transform("babelify", {
+            babelrc: false,
             extensions: [".ts"],
-            presets: ["@babel/preset-env"],
+            presets: [
+                [
+                    "@babel/preset-env", {
+                    targets: {
+                        browsers: [
+                            "ios > 8",
+                            "android > 4.2",
+                            "and_chr > 38",
+                            "and_ff > 56",
+                            "and_qq > 1.1",
+                            "and_uc > 9",
+                            "ie_mob > 10",
+                            "ie >= 7",
+                        ],
+                    },
+                        useBuiltIns: "entry",
+                    },
+                ],
+            ],
         })
     .bundle()
     .pipe(source("bundle.js"))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(sourcemaps.write("./"))
     .pipe(gulp.dest("dist"));
 }));
