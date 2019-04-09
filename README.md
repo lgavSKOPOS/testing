@@ -1,7 +1,10 @@
-# TestAng
+# Build and run project with Gulp and lite-server
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.1.
-
+- Once in project directory do the following 
+ - Run: 'gulp' in terminal to build  project
+ - Run: 'npm run dev-dist' to run app in a lite server )
+   - script inside package.json which really runs: "lite-server --baseDir=\"dist\"\n "
+ - App should be running on 'localhost:3000' on browser
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
