@@ -1,9 +1,9 @@
 # Build and run project with Gulp and lite-server
 
-- Once in project directory do the following 
-  - Run: 'gulp' in terminal to build  project
-  - Run: 'npm run dev-dist' to run app in a lite server )
-    - script inside package.json which really runs: "lite-server --baseDir=\"dist\"\n "
+- Once in project directory run the following in the terminal: 
+  - 'gulp'  to build  project
+  - 'npm run dev-dist' to run app in a lite server
+    - (Note: This script is inside package.json which really runs: "lite-server --baseDir=\"dist\"\n ")
   - App should be running on 'localhost:3000' on browser
 ## Development server
 
