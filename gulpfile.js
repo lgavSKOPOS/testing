@@ -6,7 +6,7 @@ var uglify = require("gulp-uglify");
 var sourcemaps = require("gulp-sourcemaps");
 var buffer = require("vinyl-buffer");
 var watchify = require("watchify");
-var fancy_log = require("fancy-log");
+// var fancy_log = require("fancy-log");
 
 var path = {
     app: "src/app/",
@@ -20,7 +20,6 @@ gulp.task("copy-html", function() {
     return gulp.src(path.pages)
         .pipe(gulp.dest("dist"));
 });
-
 
 gulp.task("clean:frontend", function() {
     return del(`dist/**/*`, `!dist/TestAng/*`);
@@ -55,5 +54,3 @@ gulp.task("default", gulp.series("clean:frontend", gulp.parallel("copy-html"), f
     .pipe(sourcemaps.write("./"))
     .pipe(gulp.dest("dist"));
 }));
-
-
